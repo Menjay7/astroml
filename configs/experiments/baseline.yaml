@@ -1,8 +1,9 @@
 # Baseline experiment configuration
 defaults:
-  - override /model: gcn
-  - override /training: default
-  - override /data: cora
+  - /model: gcn
+  - /training: default
+  - /data: cora
+  - _self_
 
 # Baseline settings
 experiment:
