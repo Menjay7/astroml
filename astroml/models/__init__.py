@@ -24,7 +24,6 @@ __all__ = [
     'FraudDetectionDeepSVDD',
     'GCN',
     'InductiveSAGEEncoder',
-]
     'GCNEncoder',
     'LinkPredictor',
 ]
