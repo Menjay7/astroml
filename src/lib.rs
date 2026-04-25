@@ -341,7 +341,24 @@ impl FraudRegistry {
             return Err(Error::Unauthorized);
         }
         
-        // Update configuration
+        // Validate inputs before applying
+        if let Some(rep) = min_reputation {
+            if rep > 100 {
+                return Err(Error::InvalidInput);
+            }
+        }
+        if let Some(conf) = min_confidence {
+            if conf > 100 {
+                return Err(Error::InvalidInput);
+            }
+        }
+        if let Some(thresh) = consensus_threshold {
+            if thresh == 0 {
+                return Err(Error::InvalidInput);
+            }
+        }
+
+        // Apply configuration
         if let Some(rep) = min_reputation {
             data.min_reputation = rep;
         }
