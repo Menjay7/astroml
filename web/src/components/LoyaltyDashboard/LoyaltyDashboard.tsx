@@ -8,6 +8,7 @@ import { TierBenefitsCard } from './TierBenefitsCard'
 import { PointsRedemptionPanel } from './PointsRedemptionPanel'
 import { TierComparisonChart } from './TierComparisonChart'
 import { ReferralInviteSection } from './ReferralInviteSection'
+import { RealTimeTransactionsChart } from './RealTimeTransactionsChart'
 
 export function LoyaltyDashboard() {
   const { data: summary, isLoading: loadingSummary } = useLoyaltySummary()
@@ -58,6 +59,10 @@ export function LoyaltyDashboard() {
 
       <section>
         <TierComparisonChart />
+      </section>
+
+      <section>
+        <RealTimeTransactionsChart />
       </section>
 
       <section>

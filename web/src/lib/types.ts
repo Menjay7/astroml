@@ -56,3 +56,11 @@ export type TierComparisonDatum = {
   multiplier: number
   retention: number
 }
+
+export type StellarTransaction = {
+  id: string
+  timestamp: string // ISO
+  amount: number
+  sourceAccount: string
+  destinationAccount: string
+}
