@@ -7,6 +7,7 @@ import type {
   RedemptionResponse,
   StellarTransaction,
   TierComparisonDatum,
+  FraudStats,
 } from '../lib/types'
 
 // For demo purposes, use in-memory mock data. Replace with real HTTP calls later.
@@ -43,12 +44,7 @@ export async function getLoyaltySummary(): Promise<LoyaltySummary> {
     { id: 'b3', title: 'Priority Support', description: 'Skip the line with priority support.' },
   ]
 
-  return {
-    currentTier,
-    pointsBalance,
-    nextTier,
-    benefits,
-  }
+  return { currentTier, pointsBalance, nextTier, benefits }
 }
 
 export async function getPointsHistory(page: number, pageSize: number): Promise<PointsHistoryResponse> {
@@ -113,6 +109,44 @@ function randomAccount() {
     value += chars[Math.floor(Math.random() * chars.length)]
   }
   return `${value}...`
+}
+
+export async function getFraudStats(): Promise<FraudStats> {
+  const patterns = ['sybil_cluster', 'wash_trading_loop', 'anomaly'] as const
+  const descriptions = [
+    'Coordinated fan-out from single controller account',
+    'Circular value transfer detected across 5 accounts',
+    'Unusual transaction velocity spike',
+    'Low-value repeated transfers to new accounts',
+    'Rapid account creation with identical patterns',
+    'Wash trading loop with 4 participants',
+    'Minor anomaly in transaction timing',
+    'Sybil cluster with 8 coordinated identities',
+  ]
+  const scores = [85, 72, 91, 45, 60, 88, 33, 77]
+
+  const recentAlerts = Array.from({ length: 8 }).map((_, i) => ({
+    id: `alert_${i}`,
+    accountId: `GACC${String(i).padStart(4, '0')}`,
+    pattern: patterns[i % 3],
+    riskScore: scores[i],
+    detectedAt: new Date(Date.now() - i * 3600000 * 6).toISOString(),
+    description: descriptions[i],
+  }))
+
+  const riskOverTime = Array.from({ length: 14 }).map((_, i) => ({
+    date: new Date(Date.now() - (13 - i) * 86400000).toISOString().slice(0, 10),
+    score: [42, 38, 55, 61, 48, 70, 65, 58, 72, 80, 68, 75, 63, 71][i],
+  }))
+
+  return {
+    totalAlerts: 24,
+    highRisk: 7,
+    mediumRisk: 11,
+    lowRisk: 6,
+    recentAlerts,
+    riskOverTime,
+  }
 }
 
 function delay(ms: number) {

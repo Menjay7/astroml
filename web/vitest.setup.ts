@@ -1,9 +1,8 @@
 import '@testing-library/jest-dom'
 
-class ResizeObserverMock {
+// Polyfill ResizeObserver for recharts in jsdom
+global.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}
   disconnect() {}
 }
-
-globalThis.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver
